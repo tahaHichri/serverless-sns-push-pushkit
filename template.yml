@@ -1,0 +1,31 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: 'AWS::Serverless-2016-10-31'
+Description: An AWS Serverless App for sending push notifications to Huawei devices (HMS)
+Resources:
+  pushKitSNSLambda:
+    Type: 'AWS::Serverless::Function'
+    Properties:
+      Handler: index.handler
+      Runtime: nodejs14.x
+      CodeUri: .
+      Description: 'An AWS Serverless App for sending push notifications to Huawei devices (HMS)'
+      MemorySize: 128
+      Timeout: 3
+      Events:
+        SNS1:
+          Type: SNS
+          Properties:
+            Topic:
+              Ref: SNSTopic1
+      Environment:
+        Variables:
+          HWEI_APP_ID: !Ref AppId
+          HWEI_CLIENT_ID: !Ref ClientId
+          HWEI_CLIENT_SECRET: !Ref ClientSecret
+  SNSTopic1:
+    Type: 'AWS::SNS::Topic'
+    Properties:
+      ContentBasedDeduplication: Boolean
+      DisplayName: 'Push to HMS devices'
+      TopicName: 'mobile_push_hms'
+      FifoTopic: False
