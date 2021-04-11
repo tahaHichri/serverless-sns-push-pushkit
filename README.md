@@ -1,0 +1,1 @@
+An AWS serverless application for sending push notifications to Huawei devices without Google Play Services.
